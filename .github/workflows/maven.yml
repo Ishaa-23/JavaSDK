@@ -1,0 +1,22 @@
+name: Publish package to GitHub Packages
+on: push
+jobs:
+  publish:
+    runs-on: ubuntu-latest 
+    permissions: 
+      contents: read
+      packages: write 
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Check if it's a new tag
+        id: is_new_tag
+        run: echo ::set-output name=is_new_tag::$(if [ -n "${GITHUB_REF##refs/tags/}" ]; then echo true; else echo false; fi)
+      - name: Publish package
+        if: steps.is_new_tag.outputs.is_new_tag == 'true' && contains(github.event_name, 'tag') && !startsWith(github.ref, 'refs/tags/1.0.0')
+        run: mvn --batch-mode deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.sdk }}
