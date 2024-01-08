@@ -16,7 +16,7 @@ jobs:
         id: is_correct_tag
         run: echo ::set-output name=is_correct_tag::$(if [ "${GITHUB_REF##refs/tags/}" = "1.0.0" ]; then echo true; else echo false; fi)
       - name: Publish package
-        if: steps.is_correct_tag.outputs.is_correct_tag == 'true'
+        
         run: mvn --batch-mode deploy
         env:
           GITHUB_TOKEN: ${{ secrets.sdk }}
