@@ -1,5 +1,5 @@
 # openapi-java-client
-
+changed version
 Combined API
 - API version: 1.0.0
   - Build date: 2024-01-07T21:49:07.135721400-08:00[America/Los_Angeles]
